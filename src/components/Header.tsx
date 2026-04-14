@@ -28,6 +28,7 @@ const Header = () => (
         <div className="hidden md:flex items-center gap-6 font-body text-sm">
           <Link to="/" className="text-accent hover:opacity-80 transition-opacity">Home</Link>
           <Link to="/projects" className="opacity-80 hover:opacity-100 transition-opacity">Projects</Link>
+          <Link to="/sandalwood-benefits" className="opacity-80 hover:opacity-100 transition-opacity">Why Sandalwood</Link>
           <Link to="/directors" className="opacity-80 hover:opacity-100 transition-opacity">Directors</Link>
           <a href="#contact" className="opacity-80 hover:opacity-100 transition-opacity">Contact</a>
         </div>

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Project } from "@/data/projects";
-import { MapPin, Grid3X3, TrendingUp } from "lucide-react";
+import { MapPin, Grid3X3, TrendingUp, TreePine } from "lucide-react";
 
 const ProjectCard = ({ project }: { project: Project }) => (
   <Link
@@ -20,6 +20,11 @@ const ProjectCard = ({ project }: { project: Project }) => (
       <p className="mb-3 flex items-center gap-1 text-sm text-muted-foreground">
         <MapPin className="h-3 w-3" /> {project.location}, {project.city}
       </p>
+      <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-secondary/10 px-3 py-1 text-xs">
+        <TreePine className="h-3 w-3 text-secondary" />
+        <span className="font-medium">{project.treeStage}</span>
+        <span className="text-muted-foreground">• {project.treeAgeYears} yrs old (Planted {project.plantedYear})</span>
+      </div>
       <div className="grid grid-cols-2 gap-3 text-sm">
         <div className="flex items-center gap-2">
           <Grid3X3 className="h-4 w-4 text-gold" />

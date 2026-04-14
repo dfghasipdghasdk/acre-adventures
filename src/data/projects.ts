@@ -54,6 +54,9 @@ export interface Project {
   amenities: Amenity[];
   plots: Plot[];
   heroImage?: string;
+  treeStage: string;
+  treeAgeYears: number;
+  plantedYear: number;
 }
 
 export const firmDetails = {
@@ -192,6 +195,9 @@ export const projects: Project[] = [
       { icon: "💧", title: "Drip Irrigation", description: "Automated irrigation for all plots" },
     ],
     plots: generatePlots(20, 3000),
+    treeStage: "Juvenile",
+    treeAgeYears: 6,
+    plantedYear: 2020,
   },
   {
     id: "2",
@@ -222,6 +228,9 @@ export const projects: Project[] = [
       { icon: "📹", title: "CCTV Surveillance", description: "Round-the-clock monitoring" },
     ],
     plots: generatePlots(15, 4000),
+    treeStage: "Young Growth",
+    treeAgeYears: 3,
+    plantedYear: 2023,
   },
   {
     id: "3",
@@ -252,5 +261,8 @@ export const projects: Project[] = [
       { icon: "🌊", title: "Rainwater Harvesting", description: "Sustainable water management" },
     ],
     plots: generatePlots(25, 2000),
+    treeStage: "Sapling",
+    treeAgeYears: 1,
+    plantedYear: 2025,
   },
 ];
