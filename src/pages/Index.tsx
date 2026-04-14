@@ -78,8 +78,8 @@ const Index = () => (
             </div>
           ))}
         </div>
-        <Link to="/projects" className="mt-10 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-heading font-semibold text-primary-foreground transition-opacity hover:opacity-90">
-          View All Projects <ArrowRight className="h-4 w-4" />
+        <Link to="/sandalwood-benefits" className="mt-10 inline-flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-heading font-semibold text-primary-foreground transition-opacity hover:opacity-90">
+          Learn More About Red Sandalwood <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
     </section>

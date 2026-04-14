@@ -40,17 +40,19 @@ const ProjectPage = () => {
           </p>
           <p className="mb-6 max-w-2xl font-body leading-relaxed opacity-80">{project.description}</p>
 
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
             {[
               { icon: Grid3X3, label: "Total Plots", val: project.totalPlots },
               { icon: Grid3X3, label: "Available", val: project.availablePlots },
               { icon: Ruler, label: "Plot Sizes", val: project.plotSizeRange },
               { icon: IndianRupee, label: "Price Range", val: project.priceRange },
+              { icon: TreePine, label: "Tree Stage", val: project.treeStage },
+              { icon: TreePine, label: "Tree Age", val: `${project.treeAgeYears} yrs (Planted ${project.plantedYear})` },
             ].map(({ icon: Icon, label, val }) => (
               <div key={label} className="rounded-lg bg-secondary/20 p-3">
                 <Icon className="mb-1 h-4 w-4 text-accent" />
                 <p className="text-xs opacity-60">{label}</p>
-                <p className="font-heading font-bold">{val}</p>
+                <p className="font-heading font-bold text-sm">{val}</p>
               </div>
             ))}
           </div>
