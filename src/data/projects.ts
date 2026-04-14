@@ -54,6 +54,9 @@ export interface Project {
   amenities: Amenity[];
   plots: Plot[];
   heroImage?: string;
+  treeStage: string;
+  treeAgeYears: number;
+  plantedYear: number;
 }
 
 export const firmDetails = {
