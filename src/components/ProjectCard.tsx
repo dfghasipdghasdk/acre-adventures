@@ -9,7 +9,7 @@ const ProjectCard = ({ project }: { project: Project }) => (
   >
     <div className="relative h-48 gradient-emerald overflow-hidden">
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className="font-heading text-6xl font-bold text-primary-foreground/15">{project.name.split(" ").pop()}</span>
+        <span className="font-heading text-6xl font-bold text-primary-foreground/20">{project.name}</span>
       </div>
       <div className="absolute right-3 top-3 rounded-full bg-accent px-3 py-1 text-xs font-heading font-semibold text-accent-foreground">
         {project.availablePlots} plots available

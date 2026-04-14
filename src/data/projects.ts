@@ -1,3 +1,5 @@
+import { akulPlotShapes } from "@/data/akulGardensMap";
+
 export type PlotStatus = "available" | "booked" | "sold";
 
 export interface Plot {
@@ -141,23 +143,24 @@ const plotBenefits = [
 
 const generatePlots = (count: number, basePrice: number): Plot[] => {
   const facings = ["North", "South", "East", "West", "North-East", "South-West"];
-  const statuses: PlotStatus[] = ["available", "available", "available", "booked", "sold", "available"];
+  const statuses: PlotStatus[] = ["available", "available", "booked", "available", "sold", "available"];
+  const shapes = akulPlotShapes.slice(0, count);
   return Array.from({ length: count }, (_, i) => {
-    const sqft = 1200 + Math.floor(Math.random() * 1800);
+    const sqft = 1200 + ((i * 87) % 1100);
     const w = Math.round(Math.sqrt(sqft * 1.5));
     const h = Math.round(sqft / w);
-    const trees = Math.floor(sqft / 200) + Math.floor(Math.random() * 3);
-    const yieldPct = 12 + Math.random() * 18;
+    const trees = Math.floor(sqft / 220) + (i % 3);
+    const yieldPct = 12 + (i % 14);
     return {
       id: `plot-${i + 1}`,
-      number: `P${String(i + 1).padStart(3, "0")}`,
+      number: shapes[i]?.plotNumber ?? `${i + 1}`,
       dimensions: `${w}ft × ${h}ft`,
       sqft,
       price: sqft * basePrice,
       pricePerSqft: basePrice,
       status: statuses[i % statuses.length],
       facing: facings[i % facings.length],
-      position: { x: (i % 5) * 20 + 5, y: Math.floor(i / 5) * 25 + 10 },
+      position: shapes[i] ? { x: (shapes[i].center.x / 1024) * 100, y: (shapes[i].center.y / 581) * 100 } : { x: 10, y: 10 },
       sandalwoodTrees: trees,
       yieldPercentage: Math.round(yieldPct * 10) / 10,
       benefits: plotBenefits[i % plotBenefits.length],
@@ -165,104 +168,44 @@ const generatePlots = (count: number, basePrice: number): Plot[] => {
   });
 };
 
+const akulGeneratedPlots = generatePlots(123, 3000);
+const availableCount = akulGeneratedPlots.filter((plot) => plot.status === "available").length;
+const minSqft = Math.min(...akulGeneratedPlots.map((plot) => plot.sqft));
+const maxSqft = Math.max(...akulGeneratedPlots.map((plot) => plot.sqft));
+
 export const projects: Project[] = [
   {
     id: "1",
-    name: "Rudra Sandal Greens",
-    slug: "rudra-sandal-greens",
-    location: "Devanahalli, Near KIA",
-    city: "Bangalore",
-    coordinates: [13.2468, 77.7140],
-    totalPlots: 120,
-    availablePlots: 78,
-    priceRange: "₹36L - ₹72L",
-    plotSizeRange: "1200 - 2400 sqft",
-    description: "A premium red sandalwood agroforestry estate nestled amidst lush greenery near Kempegowda International Airport. Each plot comes with pre-planted sandalwood saplings and guaranteed yield projections.",
+    name: "Akul Gardens",
+    slug: "akul-gardens",
+    location: "Kumbampadu Village, Pedaraveedu Mandal",
+    city: "Markapur District",
+    coordinates: [15.7215, 79.2673],
+    totalPlots: akulGeneratedPlots.length,
+    availablePlots: availableCount,
+    priceRange: "Contact for latest pricing",
+    plotSizeRange: `${minSqft} - ${maxSqft} sqft`,
+    description: "Akul Gardens is a plotted sandalwood project in Kumbampadu Village, Pedaraveedu Mandal, Markapur District. The project follows the approved on-ground layout dated 4th April, 2026, including 60 ft, 30 ft, and 20 ft roads, with status categories mapped as Vacant, Booked, and Registered.",
     highlights: [
-      "5 mins from KIA Airport",
-      "BMRDA Approved",
-      "Pre-planted Sandalwood",
-      "Gated community with 24/7 security",
+      "Layout update as of 4th April, 2026",
+      "Located in Kumbampadu Village, Pedaraveedu Mandal",
+      "Road network: 60 ft, 30 ft, and 20 ft roads",
+      "Plot status legend includes Vacant, Booked, Registered",
     ],
     amenities: [
-      { icon: "🌳", title: "Sandalwood Nursery", description: "On-site nursery with 5000+ saplings" },
-      { icon: "🏋️", title: "Gymnasium", description: "Fully equipped modern gym" },
-      { icon: "🌿", title: "Organic Farm", description: "2 acres of community farming" },
-      { icon: "🏸", title: "Sports Arena", description: "Badminton, tennis, basketball courts" },
-      { icon: "🏥", title: "Health Center", description: "On-campus medical facility" },
-      { icon: "🎪", title: "Clubhouse", description: "15,000 sqft premium clubhouse" },
-      { icon: "🛣️", title: "Wide Roads", description: "40ft & 60ft asphalted roads" },
-      { icon: "💧", title: "Drip Irrigation", description: "Automated irrigation for all plots" },
+      { icon: "🛣️", title: "60 ft Main Road", description: "Primary approach road inside the layout." },
+      { icon: "🧭", title: "Road Grid", description: "30 ft and 20 ft internal roads for easy access." },
+      { icon: "🏠", title: "3 BHK Kerala Guest House", description: "Dedicated guest house block shown in layout." },
+      { icon: "🛖", title: "3 Worker Rooms", description: "Worker accommodation provision inside layout." },
+      { icon: "🗺️", title: "Plotted Blocks", description: "Clearly demarcated numbered plots in all zones." },
+      { icon: "🌱", title: "Sandalwood Focus", description: "Project positioned for long-term plantation value." },
+      { icon: "📍", title: "Markapur Region", description: "Located in Markapur District growth corridor." },
+      { icon: "📅", title: "Latest Update", description: "Layout status map marked on 4th April, 2026." },
     ],
-    plots: generatePlots(20, 3000),
-    treeStage: "Juvenile",
-    treeAgeYears: 6,
-    plantedYear: 2020,
-  },
-  {
-    id: "2",
-    name: "Rudra Sandal Enclave",
-    slug: "rudra-sandal-enclave",
-    location: "Sarjapur Road",
-    city: "Bangalore",
-    coordinates: [12.8680, 77.7860],
-    totalPlots: 85,
-    availablePlots: 42,
-    priceRange: "₹48L - ₹90L",
-    plotSizeRange: "1200 - 3000 sqft",
-    description: "Located on the thriving Sarjapur Road corridor, this exclusive agroforestry estate combines red sandalwood investment with premium residential plotting near major IT hubs.",
-    highlights: [
-      "On Sarjapur Road",
-      "Near top IT parks",
-      "High-yield sandalwood plots",
-      "Investment hotspot",
-    ],
-    amenities: [
-      { icon: "🌲", title: "Sandalwood Walk", description: "1km trail through sandalwood groves" },
-      { icon: "🧘", title: "Yoga & Meditation", description: "Serene meditation pavilion" },
-      { icon: "🌳", title: "Jogging Track", description: "1.2 km landscaped trail" },
-      { icon: "🎮", title: "Gaming Zone", description: "Indoor games and activities" },
-      { icon: "👶", title: "Children's Play Area", description: "Safe and engaging play zones" },
-      { icon: "🏪", title: "Convenience Store", description: "On-site retail shops" },
-      { icon: "⚡", title: "Power Backup", description: "24/7 uninterrupted power" },
-      { icon: "📹", title: "CCTV Surveillance", description: "Round-the-clock monitoring" },
-    ],
-    plots: generatePlots(15, 4000),
-    treeStage: "Young Growth",
-    treeAgeYears: 3,
-    plantedYear: 2023,
-  },
-  {
-    id: "3",
-    name: "Rudra Sandal Heritage",
-    slug: "rudra-sandal-heritage",
-    location: "Mysore Road, Bidadi",
-    city: "Bangalore",
-    coordinates: [12.8010, 77.3870],
-    totalPlots: 200,
-    availablePlots: 156,
-    priceRange: "₹24L - ₹54L",
-    plotSizeRange: "1200 - 2400 sqft",
-    description: "Spread across 50 acres of scenic landscape along Mysore Road, this mega agroforestry township offers the best value red sandalwood investment with excellent appreciation potential.",
-    highlights: [
-      "50 acres mega township",
-      "On Mysore Expressway",
-      "Maximum sandalwood density",
-      "Best value investment",
-    ],
-    amenities: [
-      { icon: "🛕", title: "Temple", description: "Beautifully designed community temple" },
-      { icon: "🌳", title: "Sandalwood Forest", description: "10-acre dedicated sandalwood zone" },
-      { icon: "🌿", title: "Organic Garden", description: "Community farming plots" },
-      { icon: "🏟️", title: "Amphitheatre", description: "Open-air event space" },
-      { icon: "🚶", title: "Walking Paths", description: "Tree-lined walking trails" },
-      { icon: "🏠", title: "Community Hall", description: "Multi-purpose event hall" },
-      { icon: "🔒", title: "Gated Security", description: "Manned gates with visitor mgmt" },
-      { icon: "🌊", title: "Rainwater Harvesting", description: "Sustainable water management" },
-    ],
-    plots: generatePlots(25, 2000),
-    treeStage: "Sapling",
-    treeAgeYears: 1,
-    plantedYear: 2025,
+    plots: akulGeneratedPlots,
+    heroImage: "/akul-gardens-layout.png",
+    treeStage: "Layout Active",
+    treeAgeYears: 0,
+    plantedYear: 2026,
   },
 ];

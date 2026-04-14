@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { projects, Plot } from "@/data/projects";
+import { projects } from "@/data/projects";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PlotGrid from "@/components/PlotGrid";
@@ -87,12 +87,14 @@ const ProjectPage = () => {
                   <p className="text-xs font-heading uppercase tracking-[0.24em] text-accent">Location Overview</p>
                   <h4 className="mt-3 font-heading text-2xl font-bold">{project.location}</h4>
                   <p className="mt-3 max-w-xl font-body text-muted-foreground">
-                    Each plot in this estate is optimized for Red Sandalwood (Pterocarpus santalinus) cultivation with proper spacing, soil preparation, and drip irrigation infrastructure.
+                    The project is presented as an interactive 3D-style plot layout below, where users can select individual plots to view size, facing, pricing, and booking details.
                   </p>
                 </div>
                 <div className="rounded-lg border border-border bg-background p-6">
                   <p className="text-sm text-muted-foreground">City</p>
                   <p className="mb-4 font-heading text-lg font-bold">{project.city}</p>
+                  <p className="text-sm text-muted-foreground">Layout Status Date</p>
+                  <p className="mb-4 font-medium">4th April, 2026</p>
                   <p className="text-sm text-muted-foreground">Coordinates</p>
                   <p className="mb-6 font-medium">{project.coordinates[0]}, {project.coordinates[1]}</p>
                   <a
@@ -108,8 +110,10 @@ const ProjectPage = () => {
             </div>
 
             <h3 className="mb-2 font-heading text-xl font-bold">Select a Plot</h3>
-            <p className="mb-4 font-body text-sm text-muted-foreground">Click an available plot to see benefits, sandalwood data, and pre-book inline.</p>
-            <PlotGrid plots={project.plots} onSelectPlot={() => {}} projectName={project.name} />
+            <p className="mb-4 font-body text-sm text-muted-foreground">
+              Hover on each plot to view quick details. Click to pin full details for that specific plot.
+            </p>
+            <PlotGrid plots={project.plots} onSelectPlot={() => {}} />
           </div>
         ) : (
           <div>

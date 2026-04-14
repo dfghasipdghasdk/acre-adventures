@@ -3,13 +3,20 @@ import { firmDetails } from "@/data/projects";
 import { Phone, Mail, MapPin, Instagram, Facebook, Linkedin, Youtube, ExternalLink } from "lucide-react";
 
 const Footer = () => (
-  <footer id="contact" className="bg-primary text-primary-foreground">
+  <footer id="contact" className="bg-forest-deep text-primary-foreground">
     <div className="container py-16">
       <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
         <div>
-          <div className="flex items-center gap-2 mb-4">
-            <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center font-heading font-bold text-accent-foreground text-lg">R</div>
-            <h3 className="font-heading font-bold text-xl">{firmDetails.name}</h3>
+          <div className="flex items-center gap-3 mb-4">
+            <img
+              src="/rudraa-logo.png"
+              alt={`${firmDetails.name} logo`}
+              className="h-12 w-12 rounded-full border border-accent/40 object-cover bg-white"
+            />
+            <div>
+              <h3 className="font-heading font-bold text-xl text-[hsl(var(--red-accent))]">{firmDetails.name}</h3>
+              <p className="text-xs text-gold-light uppercase tracking-[0.14em]">Green to Gold</p>
+            </div>
           </div>
           <p className="opacity-60 text-sm leading-relaxed font-body">{firmDetails.tagline}</p>
           <div className="flex gap-3 mt-6">

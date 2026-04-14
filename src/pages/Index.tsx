@@ -26,7 +26,7 @@ const Index = () => (
             Invest in <span className="text-accent">Nature</span>,{" "}
             <span className="text-accent">Grow</span> Your Future
           </h1>
-          <p className="mb-8 font-body text-lg leading-relaxed opacity-80">
+          <p className="mb-8 font-body text-lg leading-relaxed opacity-90">
             {firmDetails.tagline}. Premium plotted agroforestry estates across Bangalore with red sandalwood cultivation, transparent pricing, and guaranteed yield projections.
           </p>
           <div className="flex gap-4">
@@ -44,7 +44,7 @@ const Index = () => (
             <div key={label} className="text-center">
               <Icon className="mx-auto mb-2 h-6 w-6 text-accent" />
               <p className="font-heading text-2xl font-bold">{value}</p>
-              <p className="text-sm opacity-60">{label}</p>
+              <p className="text-sm opacity-80">{label}</p>
             </div>
           ))}
         </div>
