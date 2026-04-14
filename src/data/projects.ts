@@ -231,6 +231,7 @@ export const projects: Project[] = [
     treeStage: "Young Growth",
     treeAgeYears: 3,
     plantedYear: 2023,
+  },
   {
     id: "3",
     name: "Rudra Sandal Heritage",
@@ -263,4 +264,5 @@ export const projects: Project[] = [
     treeStage: "Sapling",
     treeAgeYears: 1,
     plantedYear: 2025,
+  },
 ];
