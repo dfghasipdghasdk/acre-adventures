@@ -26,9 +26,16 @@ const Index = () => (
         </p>
       </div>
     </section>
-    <section className="container py-16">
-      <h2 className="font-heading text-3xl font-bold mb-4">Debug Render Check</h2>
-      <p className="font-body text-muted-foreground">If you can see this, the root page is rendering correctly.</p>
+    <section id="projects" className="py-16 bg-card">
+      <div className="container">
+        <h2 className="font-heading text-3xl font-bold text-center mb-2">Featured Projects</h2>
+        <p className="text-muted-foreground text-center mb-10 font-body">Premium plotted developments with world-class amenities</p>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((p, i) => (
+            <ProjectCard key={p.id} project={p} index={i} />
+          ))}
+        </div>
+      </div>
     </section>
     <Footer />
   </div>
