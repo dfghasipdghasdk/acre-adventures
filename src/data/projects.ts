@@ -198,6 +198,7 @@ export const projects: Project[] = [
     treeStage: "Juvenile",
     treeAgeYears: 6,
     plantedYear: 2020,
+  },
   {
     id: "2",
     name: "Rudra Sandal Enclave",
