@@ -6,51 +6,56 @@
 
 @layer base {
   :root {
-    --background: 40 33% 95%;
-    --foreground: 160 80% 12%;
+    --background: 45 30% 96%;
+    --foreground: 150 40% 12%;
 
-    --card: 40 33% 92%;
-    --card-foreground: 160 80% 12%;
+    --card: 45 25% 93%;
+    --card-foreground: 150 40% 12%;
 
-    --popover: 40 33% 95%;
-    --popover-foreground: 160 80% 12%;
+    --popover: 45 30% 96%;
+    --popover-foreground: 150 40% 12%;
 
-    --primary: 160 80% 12%;
-    --primary-foreground: 40 33% 95%;
+    --primary: 150 45% 16%;
+    --primary-foreground: 45 30% 96%;
 
-    --secondary: 162 60% 27%;
-    --secondary-foreground: 40 33% 95%;
+    --secondary: 145 35% 28%;
+    --secondary-foreground: 45 30% 96%;
 
-    --muted: 40 20% 88%;
-    --muted-foreground: 160 20% 40%;
+    --muted: 45 18% 88%;
+    --muted-foreground: 150 15% 40%;
 
-    --accent: 43 60% 54%;
-    --accent-foreground: 160 80% 12%;
+    --accent: 145 50% 36%;
+    --accent-foreground: 45 30% 96%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 65% 50%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 20% 82%;
-    --input: 40 20% 82%;
-    --ring: 43 60% 54%;
+    --border: 45 15% 82%;
+    --input: 45 15% 82%;
+    --ring: 145 50% 36%;
 
     --radius: 0.75rem;
 
-    --gold: 43 60% 54%;
-    --gold-light: 43 55% 72%;
-    --emerald-deep: 160 80% 12%;
-    --emerald-mid: 162 60% 27%;
-    --cream: 40 33% 95%;
-    --cream-dark: 40 20% 88%;
+    --forest-deep: 150 45% 16%;
+    --forest-mid: 145 35% 28%;
+    --forest-accent: 145 50% 36%;
+    --earth-brown: 28 40% 35%;
+    --earth-light: 30 30% 55%;
+    --cream: 45 30% 96%;
+    --cream-dark: 45 18% 88%;
+    --red-accent: 0 65% 50%;
+    --red-light: 0 50% 60%;
+    --gold: 43 40% 48%;
+    --gold-light: 43 35% 65%;
 
-    --sidebar-background: 160 80% 12%;
-    --sidebar-foreground: 40 33% 95%;
-    --sidebar-primary: 43 60% 54%;
-    --sidebar-primary-foreground: 160 80% 12%;
-    --sidebar-accent: 162 60% 27%;
-    --sidebar-accent-foreground: 40 33% 95%;
-    --sidebar-border: 160 60% 18%;
-    --sidebar-ring: 43 60% 54%;
+    --sidebar-background: 150 45% 16%;
+    --sidebar-foreground: 45 30% 96%;
+    --sidebar-primary: 145 50% 36%;
+    --sidebar-primary-foreground: 150 45% 16%;
+    --sidebar-accent: 145 35% 28%;
+    --sidebar-accent-foreground: 45 30% 96%;
+    --sidebar-border: 150 35% 22%;
+    --sidebar-ring: 145 50% 36%;
   }
 }
 
@@ -67,22 +72,34 @@
 }
 
 @layer utilities {
+  .text-forest {
+    color: hsl(var(--forest-accent));
+  }
+  .text-earth {
+    color: hsl(var(--earth-brown));
+  }
   .text-gold {
     color: hsl(var(--gold));
   }
-  .bg-emerald-deep {
-    background-color: hsl(var(--emerald-deep));
+  .bg-forest-deep {
+    background-color: hsl(var(--forest-deep));
   }
-  .bg-emerald-mid {
-    background-color: hsl(var(--emerald-mid));
+  .bg-forest-mid {
+    background-color: hsl(var(--forest-mid));
   }
   .bg-cream {
     background-color: hsl(var(--cream));
+  }
+  .gradient-forest {
+    background: linear-gradient(135deg, hsl(var(--forest-deep)), hsl(var(--forest-mid)));
+  }
+  .gradient-earth {
+    background: linear-gradient(135deg, hsl(var(--earth-brown)), hsl(var(--earth-light)));
   }
   .gradient-gold {
     background: linear-gradient(135deg, hsl(var(--gold)), hsl(var(--gold-light)));
   }
   .gradient-emerald {
-    background: linear-gradient(135deg, hsl(var(--emerald-deep)), hsl(var(--emerald-mid)));
+    background: linear-gradient(135deg, hsl(var(--forest-deep)), hsl(var(--forest-mid)));
   }
 }
