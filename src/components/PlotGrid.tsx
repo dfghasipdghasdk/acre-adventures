@@ -198,7 +198,7 @@ const PlotGrid = ({ plots }: PlotGridProps) => {
               </div>
             </div>
 
-            {slug && plot.status === "available" ? (
+            {slug && selectedPlot.status === "available" ? (
               <div className="border-t border-border pt-4">
                 <Button
                   onClick={() => navigate(`/prebook/${slug}/${selectedPlot.number}`)}
