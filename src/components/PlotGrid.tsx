@@ -1,11 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Plot } from "@/data/projects";
 import { TreePine, TrendingUp, Sparkles, X } from "lucide-react";
 import { akulLayout, akulPlotShapes } from "@/data/akulGardensMap";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
 
 const statusColors: Record<string, string> = {
   available: "fill-[#d5efb8] stroke-[#4f6b3a]",
@@ -34,9 +33,9 @@ interface PlotGridProps {
 const PlotGrid = ({ plots }: PlotGridProps) => {
   const [selectedPlot, setSelectedPlot] = useState<Plot | null>(null);
   const [hoveredPlot, setHoveredPlot] = useState<Plot | null>(null);
-  const [prebookForm, setPrebookForm] = useState({ name: "", phone: "", email: "" });
   const plotByNumber = new Map(plots.map((plot) => [plot.number, plot]));
-  const { toast } = useToast();
+  const navigate = useNavigate();
+  const { slug } = useParams();
   const statusCount = plots.reduce(
     (acc, plot) => {
       acc[plot.status] += 1;
@@ -46,16 +45,6 @@ const PlotGrid = ({ plots }: PlotGridProps) => {
   );
 
   const activePlot = hoveredPlot ?? selectedPlot;
-
-  const handlePrebookSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedPlot) return;
-    toast({
-      title: "Pre-Booking Submitted! 🌳",
-      description: `Interest registered for Plot ${selectedPlot.number}. Our team will contact you within 24 hours.`,
-    });
-    setPrebookForm({ name: "", phone: "", email: "" });
-  };
 
   return (
     <div>
