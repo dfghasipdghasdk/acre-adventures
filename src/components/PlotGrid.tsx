@@ -1,11 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Plot } from "@/data/projects";
 import { TreePine, TrendingUp, Sparkles, X } from "lucide-react";
 import { akulLayout, akulPlotShapes } from "@/data/akulGardensMap";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
 
 const statusColors: Record<string, string> = {
   available: "fill-[#d5efb8] stroke-[#4f6b3a]",
@@ -34,9 +33,9 @@ interface PlotGridProps {
 const PlotGrid = ({ plots }: PlotGridProps) => {
   const [selectedPlot, setSelectedPlot] = useState<Plot | null>(null);
   const [hoveredPlot, setHoveredPlot] = useState<Plot | null>(null);
-  const [prebookForm, setPrebookForm] = useState({ name: "", phone: "", email: "" });
   const plotByNumber = new Map(plots.map((plot) => [plot.number, plot]));
-  const { toast } = useToast();
+  const navigate = useNavigate();
+  const { slug } = useParams();
   const statusCount = plots.reduce(
     (acc, plot) => {
       acc[plot.status] += 1;
@@ -46,16 +45,6 @@ const PlotGrid = ({ plots }: PlotGridProps) => {
   );
 
   const activePlot = hoveredPlot ?? selectedPlot;
-
-  const handlePrebookSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedPlot) return;
-    toast({
-      title: "Pre-Booking Submitted! 🌳",
-      description: `Interest registered for Plot ${selectedPlot.number}. Our team will contact you within 24 hours.`,
-    });
-    setPrebookForm({ name: "", phone: "", email: "" });
-  };
 
   return (
     <div>
@@ -131,13 +120,11 @@ const PlotGrid = ({ plots }: PlotGridProps) => {
                       onBlur={() => setHoveredPlot(null)}
                       onClick={() => {
                         setSelectedPlot(plot);
-                        onSelectPlot(plot);
                       }}
                       onKeyDown={(event) => {
                         if (event.key === "Enter" || event.key === " ") {
                           event.preventDefault();
                           setSelectedPlot(plot);
-                          onSelectPlot(plot);
                         }
                       }}
                       className={`${statusColors[plot.status]} cursor-pointer transition-opacity hover:opacity-90 ${isSelected ? "stroke-[3]" : "stroke-[1.2]"}`}
@@ -211,50 +198,17 @@ const PlotGrid = ({ plots }: PlotGridProps) => {
               </div>
             </div>
 
-            <div className="border-t border-border pt-4">
-              <h4 className="mb-3 font-heading text-sm font-semibold">Pre-Book This Plot</h4>
-              <form onSubmit={handlePrebookSubmit} className="space-y-3">
-                <div>
-                  <Label htmlFor="pb-name" className="text-xs">Full Name</Label>
-                  <Input
-                    id="pb-name"
-                    required
-                    value={prebookForm.name}
-                    onChange={(e) => setPrebookForm((f) => ({ ...f, name: e.target.value }))}
-                    placeholder="Your name"
-                    className="h-9 text-sm"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="pb-phone" className="text-xs">Phone</Label>
-                  <Input
-                    id="pb-phone"
-                    required
-                    type="tel"
-                    value={prebookForm.phone}
-                    onChange={(e) => setPrebookForm((f) => ({ ...f, phone: e.target.value }))}
-                    placeholder="+91 98765 43210"
-                    className="h-9 text-sm"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="pb-email" className="text-xs">Email</Label>
-                  <Input
-                    id="pb-email"
-                    required
-                    type="email"
-                    value={prebookForm.email}
-                    onChange={(e) => setPrebookForm((f) => ({ ...f, email: e.target.value }))}
-                    placeholder="you@email.com"
-                    className="h-9 text-sm"
-                  />
-                </div>
-                <Button type="submit" className="w-full bg-accent text-accent-foreground font-heading font-semibold hover:opacity-90">
-                  Submit Pre-Booking
+            {slug && selectedPlot.status === "available" ? (
+              <div className="border-t border-border pt-4">
+                <Button
+                  onClick={() => navigate(`/prebook/${slug}/${selectedPlot.number}`)}
+                  className="w-full bg-accent text-accent-foreground font-heading font-semibold hover:opacity-90"
+                >
+                  Pre-Book This Plot
                 </Button>
-                <p className="text-center text-xs text-muted-foreground">No payment required</p>
-              </form>
-            </div>
+                <p className="mt-2 text-center text-xs text-muted-foreground">Opens booking form · No payment required</p>
+              </div>
+            ) : null}
           </div>
         )}
       </div>
