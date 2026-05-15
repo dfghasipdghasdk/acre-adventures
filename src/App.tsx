@@ -5,6 +5,7 @@ import ProjectPage from "./pages/ProjectPage.tsx";
 import Projects from "./pages/Projects.tsx";
 import Directors from "./pages/Directors.tsx";
 import SandalwoodBenefits from "./pages/SandalwoodBenefits.tsx";
+import Prebook from "./pages/Prebook.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const App = () => (
@@ -17,6 +18,7 @@ const App = () => (
         <Route path="/project/:slug" element={<ProjectPage />} />
         <Route path="/directors" element={<Directors />} />
         <Route path="/sandalwood-benefits" element={<SandalwoodBenefits />} />
+        <Route path="/prebook/:slug/:plotNumber" element={<Prebook />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
