@@ -65,43 +65,26 @@ const PlotGrid = ({ plots }: PlotGridProps) => {
             <svg viewBox={akulLayout.viewBox} className="h-auto w-full">
               <path
                 d={akulLayout.boundaryPath}
-                fill="hsl(var(--secondary) / 0.12)"
-                stroke="hsl(var(--secondary) / 0.45)"
-                strokeWidth="4"
+                fill="hsl(var(--secondary) / 0.18)"
+                stroke="hsl(var(--secondary) / 0.55)"
+                strokeWidth="3"
               />
-
-              {akulLayout.roads.map((road) => (
-                <g key={road.id}>
-                  <path d={road.d} stroke="rgba(0,0,0,0.55)" strokeWidth="8" />
-                  <text
-                    x={road.labelX}
-                    y={road.labelY}
-                    transform={road.labelRotate ? `rotate(${road.labelRotate} ${road.labelX} ${road.labelY})` : undefined}
-                    className="fill-foreground/80 text-[13px] font-semibold"
-                  >
-                    {road.label}
-                  </text>
-                </g>
-              ))}
-
-              <polygon points={akulLayout.othersLand.points} fill="hsl(var(--background))" stroke="hsl(var(--border))" strokeWidth="2" />
-              <text x={akulLayout.othersLand.labelX} y={akulLayout.othersLand.labelY} textAnchor="middle" className="fill-foreground/80 text-[22px] font-bold">
-                OTHERS LAND
+              <text
+                x={akulLayout.screen.x}
+                y={akulLayout.screen.y}
+                textAnchor="middle"
+                className="fill-foreground/60 text-[14px] font-heading font-semibold tracking-[0.3em]"
+              >
+                {akulLayout.screen.label}
               </text>
-
-              {akulLayout.utilityBlocks.map((block) => (
-                <g key={block.id}>
-                  <polygon
-                    points={block.points}
-                    fill={block.id === "guest-house" ? "rgba(125, 211, 252, 0.45)" : "rgba(120, 113, 108, 0.45)"}
-                    stroke="hsl(var(--border))"
-                    strokeWidth="2"
-                  />
-                  <text x={block.id === "guest-house" ? 674 : 750} y={block.id === "guest-house" ? 447 : 447} className="fill-foreground text-[11px] font-semibold">
-                    {block.label}
-                  </text>
-                </g>
-              ))}
+              <text
+                x={akulLayout.stageLabel.x}
+                y={akulLayout.stageLabel.y}
+                textAnchor="middle"
+                className="fill-foreground/40 text-[11px] font-body tracking-[0.4em]"
+              >
+                {akulLayout.stageLabel.label}
+              </text>
 
               {akulPlotShapes.map((shape) => {
                 const plot = plotByNumber.get(shape.plotNumber);
@@ -133,7 +116,7 @@ const PlotGrid = ({ plots }: PlotGridProps) => {
                       x={shape.center.x}
                       y={shape.center.y + 3}
                       textAnchor="middle"
-                      className="pointer-events-none fill-foreground text-[8px] font-bold"
+                      className="pointer-events-none fill-foreground text-[7px] font-bold"
                     >
                       {plot.number}
                     </text>

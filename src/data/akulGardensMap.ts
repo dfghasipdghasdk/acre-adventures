@@ -1,109 +1,139 @@
-export type PlotVisualStatus = "vacant" | "booked" | "registered";
-
 export interface AkulPlotShape {
   plotNumber: string;
   polygonPoints: string;
   center: { x: number; y: number };
 }
 
-export interface AkulRoadShape {
-  id: string;
-  d: string;
-  label: string;
-  labelX: number;
-  labelY: number;
-  labelRotate?: number;
-}
-
-interface GeneratedSlot {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  skew: number;
-}
-
-const makePolygon = ({ x, y, width, height, skew }: GeneratedSlot): string => {
-  const p1 = `${x},${y}`;
-  const p2 = `${x + width},${y + skew}`;
-  const p3 = `${x + width - skew},${y + height + skew}`;
-  const p4 = `${x - skew},${y + height}`;
-  return `${p1} ${p2} ${p3} ${p4}`;
-};
-
-const rowSlots = (
-  startX: number,
-  startY: number,
-  count: number,
-  stepX: number,
-  stepY: number,
-  width: number,
-  height: number,
-  skew: number
-): GeneratedSlot[] =>
-  Array.from({ length: count }, (_, index) => ({
-    x: startX + index * stepX,
-    y: startY + index * stepY,
-    width,
-    height,
-    skew,
-  }));
-
-const generateAkulSlots = (): GeneratedSlot[] => [
-  // Left belt (upper to lower around Others Land)
-  ...rowSlots(38, 84, 10, 30, -1, 24, 28, 4),
-  ...rowSlots(48, 122, 10, 30, -1, 24, 28, 4),
-  ...rowSlots(60, 160, 10, 30, -1, 24, 28, 4),
-  ...rowSlots(72, 200, 9, 30, -1, 24, 28, 4),
-  ...rowSlots(86, 242, 9, 30, -1, 24, 28, 4),
-  ...rowSlots(100, 286, 8, 30, -1, 24, 28, 4),
-  ...rowSlots(112, 332, 8, 30, -1, 24, 28, 4),
-  // Connector
-  ...rowSlots(360, 198, 7, 27, -9, 22, 26, 3),
-  ...rowSlots(378, 236, 7, 27, -9, 22, 26, 3),
-  ...rowSlots(396, 274, 6, 27, -9, 22, 26, 3),
-  ...rowSlots(414, 312, 6, 27, -9, 22, 26, 3),
-  ...rowSlots(432, 350, 5, 27, -9, 22, 26, 3),
-  // Right wing
-  ...rowSlots(632, 170, 9, 25, 10, 20, 28, -3),
-  ...rowSlots(652, 208, 8, 25, 10, 20, 28, -3),
-  ...rowSlots(672, 246, 8, 25, 10, 20, 28, -3),
-  ...rowSlots(694, 286, 7, 25, 10, 20, 28, -3),
-  ...rowSlots(716, 328, 6, 25, 10, 20, 28, -3),
-  ...rowSlots(738, 372, 5, 25, 10, 20, 28, -3),
-  ...rowSlots(760, 418, 5, 25, 10, 20, 28, -3),
+export const akulPlotShapes: AkulPlotShape[] = [
+  { plotNumber: "1", polygonPoints: "258.2,192.7 280.8,205.7 271.8,221.3 249.2,208.3", center: { x: 265.0, y: 207.0 } },
+  { plotNumber: "2", polygonPoints: "296.7,213.9 320.3,224.7 312.8,241.1 289.2,230.3", center: { x: 304.8, y: 227.5 } },
+  { plotNumber: "3", polygonPoints: "336.9,231.4 361.5,239.9 355.6,256.9 331.0,248.4", center: { x: 346.3, y: 244.2 } },
+  { plotNumber: "4", polygonPoints: "378.7,244.9 403.9,251.1 399.7,268.6 374.4,262.4", center: { x: 389.2, y: 256.8 } },
+  { plotNumber: "5", polygonPoints: "421.5,254.5 447.3,258.2 444.7,276.0 419.0,272.3", center: { x: 433.1, y: 265.2 } },
+  { plotNumber: "6", polygonPoints: "465.1,259.9 491.1,261.1 490.2,279.1 464.2,277.8", center: { x: 477.6, y: 269.5 } },
+  { plotNumber: "7", polygonPoints: "508.9,261.1 534.9,259.9 535.8,277.8 509.8,279.1", center: { x: 522.4, y: 269.5 } },
+  { plotNumber: "8", polygonPoints: "552.7,258.2 578.5,254.5 581.0,272.3 555.3,276.0", center: { x: 566.9, y: 265.2 } },
+  { plotNumber: "9", polygonPoints: "596.1,251.1 621.3,244.9 625.6,262.4 600.3,268.6", center: { x: 610.8, y: 256.8 } },
+  { plotNumber: "10", polygonPoints: "638.5,239.9 663.1,231.4 669.0,248.4 644.4,256.9", center: { x: 653.7, y: 244.2 } },
+  { plotNumber: "11", polygonPoints: "679.7,224.7 703.3,213.9 710.8,230.3 687.2,241.1", center: { x: 695.2, y: 227.5 } },
+  { plotNumber: "12", polygonPoints: "719.2,205.7 741.8,192.7 750.8,208.3 728.2,221.3", center: { x: 735.0, y: 207.0 } },
+  { plotNumber: "13", polygonPoints: "242.2,220.5 264.8,233.5 255.8,249.0 233.2,236.0", center: { x: 249.0, y: 234.7 } },
+  { plotNumber: "14", polygonPoints: "283.4,243.0 307.0,253.8 299.5,270.2 275.9,259.4", center: { x: 291.5, y: 256.6 } },
+  { plotNumber: "15", polygonPoints: "326.5,261.6 351.0,270.1 345.2,287.1 320.6,278.6", center: { x: 335.8, y: 274.4 } },
+  { plotNumber: "16", polygonPoints: "371.1,276.0 396.4,282.2 392.2,299.7 366.9,293.5", center: { x: 381.6, y: 287.8 } },
+  { plotNumber: "17", polygonPoints: "417.0,286.1 442.7,289.8 440.1,307.6 414.4,303.9", center: { x: 428.6, y: 296.9 } },
+  { plotNumber: "18", polygonPoints: "463.6,291.8 489.5,293.1 488.7,311.0 462.7,309.8", center: { x: 476.1, y: 301.4 } },
+  { plotNumber: "19", polygonPoints: "510.5,293.1 536.4,291.8 537.3,309.8 511.3,311.0", center: { x: 523.9, y: 301.4 } },
+  { plotNumber: "20", polygonPoints: "557.3,289.8 583.0,286.1 585.6,303.9 559.9,307.6", center: { x: 571.4, y: 296.9 } },
+  { plotNumber: "21", polygonPoints: "603.6,282.2 628.9,276.0 633.1,293.5 607.8,299.7", center: { x: 618.4, y: 287.8 } },
+  { plotNumber: "22", polygonPoints: "649.0,270.1 673.5,261.6 679.4,278.6 654.8,287.1", center: { x: 664.2, y: 274.4 } },
+  { plotNumber: "23", polygonPoints: "693.0,253.8 716.6,243.0 724.1,259.4 700.5,270.2", center: { x: 708.5, y: 256.6 } },
+  { plotNumber: "24", polygonPoints: "735.2,233.5 757.8,220.5 766.8,236.0 744.2,249.0", center: { x: 751.0, y: 234.7 } },
+  { plotNumber: "25", polygonPoints: "226.2,248.2 248.8,261.2 239.8,276.8 217.2,263.8", center: { x: 233.0, y: 262.5 } },
+  { plotNumber: "26", polygonPoints: "270.1,272.2 293.7,283.0 286.3,299.3 262.6,288.5", center: { x: 278.2, y: 285.7 } },
+  { plotNumber: "27", polygonPoints: "316.0,291.9 340.6,300.4 334.7,317.4 310.1,308.9", center: { x: 325.3, y: 304.6 } },
+  { plotNumber: "28", polygonPoints: "363.6,307.1 388.9,313.3 384.6,330.8 359.3,324.6", center: { x: 374.1, y: 318.9 } },
+  { plotNumber: "29", polygonPoints: "412.4,317.8 438.2,321.5 435.6,339.3 409.9,335.6", center: { x: 424.0, y: 328.6 } },
+  { plotNumber: "30", polygonPoints: "462.0,323.8 488.0,325.0 487.1,343.0 461.2,341.8", center: { x: 474.6, y: 333.4 } },
+  { plotNumber: "31", polygonPoints: "512.0,325.0 538.0,323.8 538.8,341.8 512.9,343.0", center: { x: 525.4, y: 333.4 } },
+  { plotNumber: "32", polygonPoints: "561.8,321.5 587.6,317.8 590.1,335.6 564.4,339.3", center: { x: 576.0, y: 328.6 } },
+  { plotNumber: "33", polygonPoints: "611.1,313.3 636.4,307.1 640.7,324.6 615.4,330.8", center: { x: 625.9, y: 318.9 } },
+  { plotNumber: "34", polygonPoints: "659.4,300.4 684.0,291.9 689.9,308.9 665.3,317.4", center: { x: 674.7, y: 304.6 } },
+  { plotNumber: "35", polygonPoints: "706.3,283.0 729.9,272.2 737.4,288.5 713.7,299.3", center: { x: 721.8, y: 285.7 } },
+  { plotNumber: "36", polygonPoints: "751.2,261.2 773.8,248.2 782.8,263.8 760.2,276.8", center: { x: 767.0, y: 262.5 } },
+  { plotNumber: "37", polygonPoints: "210.2,275.9 232.8,288.9 223.8,304.5 201.2,291.5", center: { x: 217.0, y: 290.2 } },
+  { plotNumber: "38", polygonPoints: "256.8,301.3 280.4,312.1 273.0,328.4 249.3,317.6", center: { x: 264.9, y: 314.9 } },
+  { plotNumber: "39", polygonPoints: "305.5,322.1 330.1,330.6 324.2,347.6 299.7,339.1", center: { x: 314.9, y: 334.9 } },
+  { plotNumber: "40", polygonPoints: "356.0,338.2 381.3,344.4 377.1,361.9 351.8,355.7", center: { x: 366.6, y: 350.0 } },
+  { plotNumber: "41", polygonPoints: "407.9,349.5 433.6,353.2 431.0,371.0 405.3,367.3", center: { x: 419.4, y: 360.2 } },
+  { plotNumber: "42", polygonPoints: "460.5,355.8 486.5,357.0 485.6,375.0 459.7,373.7", center: { x: 473.1, y: 365.4 } },
+  { plotNumber: "43", polygonPoints: "513.5,357.0 539.5,355.8 540.3,373.7 514.4,375.0", center: { x: 526.9, y: 365.4 } },
+  { plotNumber: "44", polygonPoints: "566.4,353.2 592.1,349.5 594.7,367.3 569.0,371.0", center: { x: 580.6, y: 360.2 } },
+  { plotNumber: "45", polygonPoints: "618.7,344.4 644.0,338.2 648.2,355.7 622.9,361.9", center: { x: 633.4, y: 350.0 } },
+  { plotNumber: "46", polygonPoints: "669.9,330.6 694.5,322.1 700.3,339.1 675.8,347.6", center: { x: 685.1, y: 334.9 } },
+  { plotNumber: "47", polygonPoints: "719.6,312.1 743.2,301.3 750.7,317.6 727.0,328.4", center: { x: 735.1, y: 314.9 } },
+  { plotNumber: "48", polygonPoints: "767.2,288.9 789.8,275.9 798.8,291.5 776.2,304.5", center: { x: 783.0, y: 290.2 } },
+  { plotNumber: "49", polygonPoints: "194.2,303.6 216.8,316.6 207.8,332.2 185.2,319.2", center: { x: 201.0, y: 317.9 } },
+  { plotNumber: "50", polygonPoints: "239.3,328.3 262.9,339.3 255.3,355.6 231.7,344.6", center: { x: 247.3, y: 342.0 } },
+  { plotNumber: "51", polygonPoints: "286.3,349.0 310.8,357.9 304.6,374.8 280.2,365.9", center: { x: 295.5, y: 361.9 } },
+  { plotNumber: "52", polygonPoints: "335.0,365.6 360.1,372.3 355.5,389.7 330.3,383.0", center: { x: 345.2, y: 377.6 } },
+  { plotNumber: "53", polygonPoints: "384.9,377.8 410.5,382.3 407.4,400.0 381.8,395.5", center: { x: 396.2, y: 388.9 } },
+  { plotNumber: "54", polygonPoints: "435.7,385.6 461.6,387.9 460.0,405.8 434.1,403.6", center: { x: 447.9, y: 395.7 } },
+  { plotNumber: "55", polygonPoints: "487.0,389.0 513.0,389.0 513.0,407.0 487.0,407.0", center: { x: 500.0, y: 398.0 } },
+  { plotNumber: "56", polygonPoints: "538.4,387.9 564.3,385.6 565.9,403.6 540.0,405.8", center: { x: 552.1, y: 395.7 } },
+  { plotNumber: "57", polygonPoints: "589.5,382.3 615.1,377.8 618.2,395.5 592.6,400.0", center: { x: 603.8, y: 388.9 } },
+  { plotNumber: "58", polygonPoints: "639.9,372.3 665.0,365.6 669.7,383.0 644.5,389.7", center: { x: 654.8, y: 377.6 } },
+  { plotNumber: "59", polygonPoints: "689.2,357.9 713.7,349.0 719.8,365.9 695.4,374.8", center: { x: 704.5, y: 361.9 } },
+  { plotNumber: "60", polygonPoints: "737.1,339.3 760.7,328.3 768.3,344.6 744.7,355.6", center: { x: 752.7, y: 342.0 } },
+  { plotNumber: "61", polygonPoints: "783.2,316.6 805.8,303.6 814.8,319.2 792.2,332.2", center: { x: 799.0, y: 317.9 } },
+  { plotNumber: "62", polygonPoints: "178.2,331.3 200.8,344.3 191.8,359.9 169.2,346.9", center: { x: 185.0, y: 345.6 } },
+  { plotNumber: "63", polygonPoints: "225.8,357.3 249.3,368.3 241.7,384.6 218.2,373.6", center: { x: 233.8, y: 371.0 } },
+  { plotNumber: "64", polygonPoints: "275.4,379.1 299.8,388.0 293.7,404.9 269.2,396.0", center: { x: 284.5, y: 392.0 } },
+  { plotNumber: "65", polygonPoints: "326.7,396.5 351.8,403.2 347.2,420.6 322.1,413.9", center: { x: 336.9, y: 408.5 } },
+  { plotNumber: "66", polygonPoints: "379.4,409.3 405.0,413.8 401.8,431.5 376.2,427.0", center: { x: 390.6, y: 420.4 } },
+  { plotNumber: "67", polygonPoints: "432.9,417.5 458.8,419.8 457.3,437.7 431.4,435.4", center: { x: 445.1, y: 427.6 } },
+  { plotNumber: "68", polygonPoints: "487.0,421.0 513.0,421.0 513.0,439.0 487.0,439.0", center: { x: 500.0, y: 430.0 } },
+  { plotNumber: "69", polygonPoints: "541.2,419.8 567.1,417.5 568.6,435.4 542.7,437.7", center: { x: 554.9, y: 427.6 } },
+  { plotNumber: "70", polygonPoints: "595.0,413.8 620.6,409.3 623.8,427.0 598.2,431.5", center: { x: 609.4, y: 420.4 } },
+  { plotNumber: "71", polygonPoints: "648.2,403.2 673.3,396.5 677.9,413.9 652.8,420.6", center: { x: 663.1, y: 408.5 } },
+  { plotNumber: "72", polygonPoints: "700.2,388.0 724.6,379.1 730.8,396.0 706.3,404.9", center: { x: 715.5, y: 392.0 } },
+  { plotNumber: "73", polygonPoints: "750.7,368.3 774.2,357.3 781.8,373.6 758.3,384.6", center: { x: 766.2, y: 371.0 } },
+  { plotNumber: "74", polygonPoints: "799.2,344.3 821.8,331.3 830.8,346.9 808.2,359.9", center: { x: 815.0, y: 345.6 } },
+  { plotNumber: "75", polygonPoints: "162.2,359.0 184.8,372.0 175.8,387.6 153.2,374.6", center: { x: 169.0, y: 373.3 } },
+  { plotNumber: "76", polygonPoints: "212.2,386.3 235.8,397.3 228.2,413.6 204.6,402.6", center: { x: 220.2, y: 400.0 } },
+  { plotNumber: "77", polygonPoints: "264.4,409.2 288.9,418.1 282.7,435.0 258.3,426.1", center: { x: 273.6, y: 422.1 } },
+  { plotNumber: "78", polygonPoints: "318.4,427.4 343.5,434.1 338.9,451.5 313.8,444.8", center: { x: 328.7, y: 439.4 } },
+  { plotNumber: "79", polygonPoints: "373.8,440.8 399.4,445.3 396.3,463.1 370.7,458.5", center: { x: 385.0, y: 451.9 } },
+  { plotNumber: "80", polygonPoints: "430.1,449.4 456.0,451.6 454.5,469.6 428.6,467.3", center: { x: 442.3, y: 459.5 } },
+  { plotNumber: "81", polygonPoints: "487.0,453.0 513.0,453.0 513.0,471.0 487.0,471.0", center: { x: 500.0, y: 462.0 } },
+  { plotNumber: "82", polygonPoints: "544.0,451.6 569.9,449.4 571.4,467.3 545.5,469.6", center: { x: 557.7, y: 459.5 } },
+  { plotNumber: "83", polygonPoints: "600.6,445.3 626.2,440.8 629.3,458.5 603.7,463.1", center: { x: 615.0, y: 451.9 } },
+  { plotNumber: "84", polygonPoints: "656.5,434.1 681.6,427.4 686.2,444.8 661.1,451.5", center: { x: 671.3, y: 439.4 } },
+  { plotNumber: "85", polygonPoints: "711.1,418.1 735.6,409.2 741.7,426.1 717.3,435.0", center: { x: 726.4, y: 422.1 } },
+  { plotNumber: "86", polygonPoints: "764.2,397.3 787.8,386.3 795.4,402.6 771.8,413.6", center: { x: 779.8, y: 400.0 } },
+  { plotNumber: "87", polygonPoints: "815.2,372.0 837.8,359.0 846.8,374.6 824.2,387.6", center: { x: 831.0, y: 373.3 } },
+  { plotNumber: "88", polygonPoints: "146.2,386.7 168.8,399.7 159.8,415.3 137.2,402.3", center: { x: 153.0, y: 401.0 } },
+  { plotNumber: "89", polygonPoints: "198.7,415.3 222.3,426.3 214.7,442.6 191.1,431.6", center: { x: 206.7, y: 429.0 } },
+  { plotNumber: "90", polygonPoints: "253.5,439.2 277.9,448.1 271.8,465.1 247.3,456.2", center: { x: 262.6, y: 452.1 } },
+  { plotNumber: "91", polygonPoints: "310.2,458.3 335.3,465.0 330.6,482.4 305.5,475.7", center: { x: 320.4, y: 470.4 } },
+  { plotNumber: "92", polygonPoints: "368.2,472.3 393.9,476.9 390.7,494.6 365.1,490.1", center: { x: 379.5, y: 483.5 } },
+  { plotNumber: "93", polygonPoints: "427.3,481.3 453.2,483.5 451.7,501.5 425.8,499.2", center: { x: 439.5, y: 491.4 } },
+  { plotNumber: "94", polygonPoints: "487.0,485.0 513.0,485.0 513.0,503.0 487.0,503.0", center: { x: 500.0, y: 494.0 } },
+  { plotNumber: "95", polygonPoints: "546.8,483.5 572.7,481.3 574.2,499.2 548.3,501.5", center: { x: 560.5, y: 491.4 } },
+  { plotNumber: "96", polygonPoints: "606.1,476.9 631.8,472.3 634.9,490.1 609.3,494.6", center: { x: 620.5, y: 483.5 } },
+  { plotNumber: "97", polygonPoints: "664.7,465.0 689.8,458.3 694.5,475.7 669.4,482.4", center: { x: 679.6, y: 470.4 } },
+  { plotNumber: "98", polygonPoints: "722.1,448.1 746.5,439.2 752.7,456.2 728.2,465.1", center: { x: 737.4, y: 452.1 } },
+  { plotNumber: "99", polygonPoints: "777.7,426.3 801.3,415.3 808.9,431.6 785.3,442.6", center: { x: 793.3, y: 429.0 } },
+  { plotNumber: "100", polygonPoints: "831.2,399.7 853.8,386.7 862.8,402.3 840.2,415.3", center: { x: 847.0, y: 401.0 } },
+  { plotNumber: "101", polygonPoints: "130.2,414.4 152.8,427.4 143.8,443.0 121.2,430.0", center: { x: 137.0, y: 428.7 } },
+  { plotNumber: "102", polygonPoints: "190.3,446.8 214.0,457.6 206.5,474.0 182.8,463.2", center: { x: 198.4, y: 460.4 } },
+  { plotNumber: "103", polygonPoints: "253.2,473.3 277.8,481.8 271.9,498.8 247.3,490.3", center: { x: 262.5, y: 486.1 } },
+  { plotNumber: "104", polygonPoints: "318.3,493.7 343.6,499.9 339.4,517.3 314.1,511.2", center: { x: 328.8, y: 505.5 } },
+  { plotNumber: "105", polygonPoints: "385.1,507.9 410.8,511.6 408.3,529.4 382.5,525.7", center: { x: 396.7, y: 518.6 } },
+  { plotNumber: "106", polygonPoints: "452.9,515.6 478.9,516.8 478.0,534.8 452.0,533.5", center: { x: 465.5, y: 525.2 } },
+  { plotNumber: "107", polygonPoints: "521.1,516.8 547.1,515.6 548.0,533.5 522.0,534.8", center: { x: 534.5, y: 525.2 } },
+  { plotNumber: "108", polygonPoints: "589.2,511.6 614.9,507.9 617.5,525.7 591.7,529.4", center: { x: 603.3, y: 518.6 } },
+  { plotNumber: "109", polygonPoints: "656.4,499.9 681.7,493.7 685.9,511.2 660.6,517.3", center: { x: 671.2, y: 505.5 } },
+  { plotNumber: "110", polygonPoints: "722.2,481.8 746.8,473.3 752.7,490.3 728.1,498.8", center: { x: 737.5, y: 486.1 } },
+  { plotNumber: "111", polygonPoints: "786.0,457.6 809.7,446.8 817.2,463.2 793.5,474.0", center: { x: 801.6, y: 460.4 } },
+  { plotNumber: "112", polygonPoints: "847.2,427.4 869.8,414.4 878.8,430.0 856.2,443.0", center: { x: 863.0, y: 428.7 } },
+  { plotNumber: "113", polygonPoints: "114.2,442.2 136.8,455.2 127.8,470.7 105.2,457.7", center: { x: 121.0, y: 456.4 } },
+  { plotNumber: "114", polygonPoints: "183.5,479.0 207.2,489.5 199.9,506.0 176.2,495.4", center: { x: 191.7, y: 492.5 } },
+  { plotNumber: "115", polygonPoints: "256.2,508.3 280.9,516.4 275.3,533.5 250.6,525.4", center: { x: 265.8, y: 520.9 } },
+  { plotNumber: "116", polygonPoints: "331.6,529.9 357.0,535.3 353.2,552.9 327.8,547.5", center: { x: 342.4, y: 541.4 } },
+  { plotNumber: "117", polygonPoints: "408.8,543.5 434.6,546.3 432.8,564.2 406.9,561.4", center: { x: 420.8, y: 553.8 } },
+  { plotNumber: "118", polygonPoints: "487.0,549.0 513.0,549.0 513.0,567.0 487.0,567.0", center: { x: 500.0, y: 558.0 } },
+  { plotNumber: "119", polygonPoints: "565.4,546.3 591.2,543.5 593.1,561.4 567.2,564.2", center: { x: 579.2, y: 553.8 } },
+  { plotNumber: "120", polygonPoints: "643.0,535.3 668.4,529.9 672.2,547.5 646.8,552.9", center: { x: 657.6, y: 541.4 } },
+  { plotNumber: "121", polygonPoints: "719.1,516.4 743.8,508.3 749.4,525.4 724.7,533.5", center: { x: 734.2, y: 520.9 } },
+  { plotNumber: "122", polygonPoints: "792.8,489.5 816.5,479.0 823.8,495.4 800.1,506.0", center: { x: 808.3, y: 492.5 } },
+  { plotNumber: "123", polygonPoints: "863.2,455.2 885.8,442.2 894.8,457.7 872.2,470.7", center: { x: 879.0, y: 456.4 } },
 ];
 
-const allSlots = generateAkulSlots().slice(0, 123);
-
-export const akulPlotShapes: AkulPlotShape[] = allSlots.map((slot, index) => ({
-  plotNumber: `${index + 1}`,
-  polygonPoints: makePolygon(slot),
-  center: {
-    x: slot.x + slot.width / 2,
-    y: slot.y + slot.height / 2,
-  },
-}));
-
 export const akulLayout = {
-  viewBox: "0 0 1024 581",
-  boundaryPath:
-    "M16 96 L304 64 L332 214 L292 276 L348 314 L434 278 L526 206 L578 244 L708 170 L1014 486 L750 556 L590 434 L502 456 L360 370 L208 426 L60 504 L16 96 Z",
-  roads: [
-    { id: "road-top-left", d: "M16 96 L304 64", label: "30 Ft Road", labelX: 220, labelY: 78, labelRotate: -14 },
-    { id: "road-main-bottom", d: "M48 336 L500 456", label: "30 Ft Road", labelX: 336, labelY: 392, labelRotate: -20 },
-    { id: "road-connector", d: "M430 278 L594 430", label: "20 Ft Road", labelX: 560, labelY: 250, labelRotate: -35 },
-    { id: "road-right", d: "M620 256 L908 438", label: "20 Ft Road", labelX: 730, labelY: 330, labelRotate: 22 },
-    { id: "road-left-vertical", d: "M26 196 L66 500", label: "60 Ft Road", labelX: 48, labelY: 292, labelRotate: -88 },
-  ] as AkulRoadShape[],
-  othersLand: {
-    points: "154,224 302,206 266,350 122,336",
-    labelX: 208,
-    labelY: 282,
-  },
-  utilityBlocks: [
-    { id: "guest-house", points: "614,424 668,424 668,462 614,462", label: "3 BHK Kerala Guest House" },
-    { id: "worker-rooms", points: "690,424 744,424 744,462 690,462", label: "3 Worker Rooms" },
-  ],
+  viewBox: "0 0 1000 600",
+  // Organic boundary: front arc (closer rows) + back arc (deeper rows) joined by sides
+  boundaryPath: "M 235 197 A 470 470 0 0 1 765 197 L 900 493 A 800 800 0 0 0 100 493 Z",
+  screen: { x: 500, y: 150, label: "MAIN ENTRY / ROAD" },
+  stageLabel: { x: 500, y: 575, label: "ESTATE BOUNDARY" },
 };
-
