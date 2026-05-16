@@ -4,11 +4,17 @@ import { Plot } from "@/data/projects";
 import { TreePine, TrendingUp, Sparkles, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import layoutImage from "/akul-gardens-layout.png";
+import { akulPlotShapes, akulLayout } from "@/data/akulGardensMap";
 
-const statusColors: Record<string, string> = {
-  available: "fill-[#d5efb8] stroke-[#4f6b3a]",
-  booked: "fill-[#e8a270] stroke-[#9f5c38]",
-  sold: "fill-[#68d853] stroke-[#2f7f2f]",
+const statusFill: Record<string, string> = {
+  available: "#d5efb8",
+  booked: "#e8a270",
+  sold: "#68d853",
+};
+const statusStroke: Record<string, string> = {
+  available: "#4f6b3a",
+  booked: "#9f5c38",
+  sold: "#2f7f2f",
 };
 
 const statusDotColors: Record<string, string> = {
@@ -39,6 +45,7 @@ const PlotGrid = ({ plots }: PlotGridProps) => {
   const [selectedPlot, setSelectedPlot] = useState<Plot | null>(null);
   const navigate = useNavigate();
   const { slug } = useParams();
+  const plotByNumber = new Map(plots.map((p) => [String(p.number), p]));
   const statusCount = plots.reduce(
     (acc, plot) => {
       acc[plot.status] += 1;
@@ -68,6 +75,39 @@ const PlotGrid = ({ plots }: PlotGridProps) => {
               alt="Akul Gardens master layout"
               className="block w-full h-auto"
             />
+            <svg
+              viewBox={akulLayout.viewBox}
+              preserveAspectRatio="none"
+              className="absolute inset-0 h-full w-full"
+            >
+              {akulPlotShapes.map((shape) => {
+                const plot = plotByNumber.get(shape.plotNumber);
+                if (!plot) return null;
+                const isSelected = selectedPlot?.number === plot.number;
+                return (
+                  <g key={shape.plotNumber} className="cursor-pointer" onClick={() => setSelectedPlot(plot)}>
+                    <polygon
+                      points={shape.polygonPoints}
+                      fill={statusFill[plot.status]}
+                      fillOpacity={isSelected ? 0.95 : 0.75}
+                      stroke={isSelected ? "#0d0d0d" : statusStroke[plot.status]}
+                      strokeWidth={isSelected ? 2 : 0.8}
+                    />
+                    <text
+                      x={shape.center.x}
+                      y={shape.center.y + 2}
+                      textAnchor="middle"
+                      fontSize="7"
+                      fontWeight="700"
+                      fill="#1a1a1a"
+                      pointerEvents="none"
+                    >
+                      {shape.plotNumber}
+                    </text>
+                  </g>
+                );
+              })}
+            </svg>
           </div>
 
           <div className="rounded-xl border border-border bg-card p-5">
