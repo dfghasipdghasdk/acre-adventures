@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Plot } from "@/data/projects";
 import { TreePine, TrendingUp, Sparkles, X } from "lucide-react";
-import { akulLayout, akulPlotShapes } from "@/data/akulGardensMap";
 import { Button } from "@/components/ui/button";
+import layoutImage from "/akul-gardens-layout.png";
 
 const statusColors: Record<string, string> = {
   available: "fill-[#d5efb8] stroke-[#4f6b3a]",
@@ -30,10 +29,14 @@ interface PlotGridProps {
   projectName?: string;
 }
 
+const statusButtonColors: Record<string, string> = {
+  available: "bg-[#d5efb8] text-[#2f4a1a] border-[#7fa05a] hover:bg-[#c2e29c]",
+  booked: "bg-[#e8a270] text-[#5a2a14] border-[#9f5c38] hover:bg-[#d88a55]",
+  sold: "bg-[#68d853] text-[#143a0e] border-[#2f7f2f] hover:bg-[#54c440]",
+};
+
 const PlotGrid = ({ plots }: PlotGridProps) => {
   const [selectedPlot, setSelectedPlot] = useState<Plot | null>(null);
-  const [hoveredPlot, setHoveredPlot] = useState<Plot | null>(null);
-  const plotByNumber = new Map(plots.map((plot) => [plot.number, plot]));
   const navigate = useNavigate();
   const { slug } = useParams();
   const statusCount = plots.reduce(
@@ -43,8 +46,6 @@ const PlotGrid = ({ plots }: PlotGridProps) => {
     },
     { available: 0, booked: 0, sold: 0 }
   );
-
-  const activePlot = hoveredPlot ?? selectedPlot;
 
   return (
     <div>
@@ -60,80 +61,35 @@ const PlotGrid = ({ plots }: PlotGridProps) => {
       </div>
 
       <div className="flex flex-col gap-8 lg:flex-row">
-        <div className="flex-1">
+        <div className="flex-1 space-y-6">
           <div className="relative overflow-hidden rounded-xl border border-border bg-card">
-            <svg viewBox={akulLayout.viewBox} className="h-auto w-full">
-              <path
-                d={akulLayout.boundaryPath}
-                fill="hsl(var(--secondary) / 0.18)"
-                stroke="hsl(var(--secondary) / 0.55)"
-                strokeWidth="3"
-              />
-              <text
-                x={akulLayout.screen.x}
-                y={akulLayout.screen.y}
-                textAnchor="middle"
-                className="fill-foreground/60 text-[14px] font-heading font-semibold tracking-[0.3em]"
-              >
-                {akulLayout.screen.label}
-              </text>
-              <text
-                x={akulLayout.stageLabel.x}
-                y={akulLayout.stageLabel.y}
-                textAnchor="middle"
-                className="fill-foreground/40 text-[11px] font-body tracking-[0.4em]"
-              >
-                {akulLayout.stageLabel.label}
-              </text>
+            <img
+              src={layoutImage}
+              alt="Akul Gardens master layout"
+              className="block w-full h-auto"
+            />
+          </div>
 
-              {akulPlotShapes.map((shape) => {
-                const plot = plotByNumber.get(shape.plotNumber);
-                if (!plot) return null;
-                const isSelected = selectedPlot?.number === shape.plotNumber;
+          <div className="rounded-xl border border-border bg-card p-5">
+            <div className="mb-3 flex items-baseline justify-between">
+              <h4 className="font-heading text-sm font-bold">Choose a Plot</h4>
+              <span className="text-xs text-muted-foreground">{plots.length} plots · refer to the layout above</span>
+            </div>
+            <div className="grid grid-cols-8 gap-1.5 sm:grid-cols-10 md:grid-cols-12">
+              {plots.map((plot) => {
+                const isSelected = selectedPlot?.number === plot.number;
                 return (
-                  <g key={shape.plotNumber}>
-                    <polygon
-                      points={shape.polygonPoints}
-                      role="button"
-                      tabIndex={0}
-                      aria-label={`Plot ${plot.number}, ${statusLabels[plot.status]}`}
-                      onMouseEnter={() => setHoveredPlot(plot)}
-                      onMouseLeave={() => setHoveredPlot(null)}
-                      onFocus={() => setHoveredPlot(plot)}
-                      onBlur={() => setHoveredPlot(null)}
-                      onClick={() => {
-                        setSelectedPlot(plot);
-                      }}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter" || event.key === " ") {
-                          event.preventDefault();
-                          setSelectedPlot(plot);
-                        }
-                      }}
-                      className={`${statusColors[plot.status]} cursor-pointer transition-opacity hover:opacity-90 ${isSelected ? "stroke-[3]" : "stroke-[1.2]"}`}
-                    />
-                    <text
-                      x={shape.center.x}
-                      y={shape.center.y + 3}
-                      textAnchor="middle"
-                      className="pointer-events-none fill-foreground text-[7px] font-bold"
-                    >
-                      {plot.number}
-                    </text>
-                  </g>
+                  <button
+                    key={plot.number}
+                    onClick={() => setSelectedPlot(plot)}
+                    aria-label={`Plot ${plot.number}, ${statusLabels[plot.status]}`}
+                    className={`aspect-square rounded border text-[10px] font-bold font-body transition-all ${statusButtonColors[plot.status]} ${isSelected ? "ring-2 ring-accent ring-offset-1 scale-110" : ""}`}
+                  >
+                    {plot.number}
+                  </button>
                 );
               })}
-            </svg>
-
-            {activePlot ? (
-              <div className="pointer-events-none absolute right-3 top-3 w-56 rounded-lg border border-border bg-background/95 p-3 shadow-lg">
-                <p className="font-heading text-sm font-bold">Plot {activePlot.number}</p>
-                <p className="text-xs text-muted-foreground">Status: {statusLabels[activePlot.status]}</p>
-                <p className="text-xs text-muted-foreground">Size: {activePlot.sqft} sqft</p>
-                <p className="text-xs text-muted-foreground">Trees: {activePlot.sandalwoodTrees}</p>
-                <p className="mt-1 text-[11px] text-muted-foreground">{activePlot.benefits[0]}</p>
-              </div>
-            ) : null}
+            </div>
           </div>
         </div>
 
