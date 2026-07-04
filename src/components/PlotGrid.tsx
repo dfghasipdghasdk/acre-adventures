@@ -112,7 +112,7 @@ const PlotGrid = ({ plots }: PlotGridProps) => {
               <Button
                 variant="secondary"
                 onClick={() => {
-                  const num = parseInt(plotInput, 10);
+                  const num = String(parseInt(plotInput, 10));
                   const plot = plots.find((p) => p.number === num);
                   if (plot) setSelectedPlot(plot);
                 }}
