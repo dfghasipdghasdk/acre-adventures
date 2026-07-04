@@ -43,6 +43,7 @@ const statusButtonColors: Record<string, string> = {
 
 const PlotGrid = ({ plots }: PlotGridProps) => {
   const [selectedPlot, setSelectedPlot] = useState<Plot | null>(null);
+  const [plotInput, setPlotInput] = useState("");
   const navigate = useNavigate();
   const { slug } = useParams();
   const plotByNumber = new Map(plots.map((p) => [String(p.number), p]));
