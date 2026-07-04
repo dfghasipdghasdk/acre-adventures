@@ -29,7 +29,6 @@ const PlotGrid = ({ plots }: PlotGridProps) => {
   const [plotInput, setPlotInput] = useState("");
   const navigate = useNavigate();
   const { slug } = useParams();
-  const plotByNumber = new Map(plots.map((p) => [String(p.number), p]));
   const statusCount = plots.reduce(
     (acc, plot) => {
       acc[plot.status] += 1;
