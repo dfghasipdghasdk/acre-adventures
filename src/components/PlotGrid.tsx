@@ -6,15 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import layoutImage from "/akul-gardens-layout.png";
 
-const statusFill: Record<string, string> = {
-  available: "#d5efb8",
-  booked: "#e8a270",
-  sold: "#68d853",
-};
-const statusStroke: Record<string, string> = {
-  available: "#4f6b3a",
-  booked: "#9f5c38",
-  sold: "#2f7f2f",
+const statusLabels: Record<string, string> = {
+  available: "Vacant",
+  booked: "Booked",
+  sold: "Registered",
 };
 
 const statusDotColors: Record<string, string> = {
@@ -23,23 +18,11 @@ const statusDotColors: Record<string, string> = {
   sold: "bg-[#68d853]",
 };
 
-const statusLabels: Record<string, string> = {
-  available: "Vacant",
-  booked: "Booked",
-  sold: "Registered",
-};
-
 interface PlotGridProps {
   plots: Plot[];
   onSelectPlot: (plot: Plot) => void;
   projectName?: string;
 }
-
-const statusButtonColors: Record<string, string> = {
-  available: "bg-[#d5efb8] text-[#2f4a1a] border-[#7fa05a] hover:bg-[#c2e29c]",
-  booked: "bg-[#e8a270] text-[#5a2a14] border-[#9f5c38] hover:bg-[#d88a55]",
-  sold: "bg-[#68d853] text-[#143a0e] border-[#2f7f2f] hover:bg-[#54c440]",
-};
 
 const PlotGrid = ({ plots }: PlotGridProps) => {
   const [selectedPlot, setSelectedPlot] = useState<Plot | null>(null);
