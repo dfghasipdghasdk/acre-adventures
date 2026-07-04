@@ -1,20 +1,15 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Plot } from "@/data/projects";
-import { TreePine, TrendingUp, Sparkles, X } from "lucide-react";
+import { TreePine, TrendingUp, Sparkles, X, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import layoutImage from "/akul-gardens-layout.png";
-import { akulPlotShapes, akulLayout } from "@/data/akulGardensMap";
 
-const statusFill: Record<string, string> = {
-  available: "#d5efb8",
-  booked: "#e8a270",
-  sold: "#68d853",
-};
-const statusStroke: Record<string, string> = {
-  available: "#4f6b3a",
-  booked: "#9f5c38",
-  sold: "#2f7f2f",
+const statusLabels: Record<string, string> = {
+  available: "Vacant",
+  booked: "Booked",
+  sold: "Registered",
 };
 
 const statusDotColors: Record<string, string> = {
@@ -23,29 +18,17 @@ const statusDotColors: Record<string, string> = {
   sold: "bg-[#68d853]",
 };
 
-const statusLabels: Record<string, string> = {
-  available: "Vacant",
-  booked: "Booked",
-  sold: "Registered",
-};
-
 interface PlotGridProps {
   plots: Plot[];
   onSelectPlot: (plot: Plot) => void;
   projectName?: string;
 }
 
-const statusButtonColors: Record<string, string> = {
-  available: "bg-[#d5efb8] text-[#2f4a1a] border-[#7fa05a] hover:bg-[#c2e29c]",
-  booked: "bg-[#e8a270] text-[#5a2a14] border-[#9f5c38] hover:bg-[#d88a55]",
-  sold: "bg-[#68d853] text-[#143a0e] border-[#2f7f2f] hover:bg-[#54c440]",
-};
-
 const PlotGrid = ({ plots }: PlotGridProps) => {
   const [selectedPlot, setSelectedPlot] = useState<Plot | null>(null);
+  const [plotInput, setPlotInput] = useState("");
   const navigate = useNavigate();
   const { slug } = useParams();
-  const plotByNumber = new Map(plots.map((p) => [String(p.number), p]));
   const statusCount = plots.reduce(
     (acc, plot) => {
       acc[plot.status] += 1;
@@ -75,61 +58,55 @@ const PlotGrid = ({ plots }: PlotGridProps) => {
               alt="Akul Gardens master layout"
               className="block w-full h-auto"
             />
-            <svg
-              viewBox={akulLayout.viewBox}
-              preserveAspectRatio="none"
-              className="absolute inset-0 h-full w-full"
-            >
-              {akulPlotShapes.map((shape) => {
-                const plot = plotByNumber.get(shape.plotNumber);
-                if (!plot) return null;
-                const isSelected = selectedPlot?.number === plot.number;
-                return (
-                  <g key={shape.plotNumber} className="cursor-pointer" onClick={() => setSelectedPlot(plot)}>
-                    <polygon
-                      points={shape.polygonPoints}
-                      fill={statusFill[plot.status]}
-                      fillOpacity={isSelected ? 0.95 : 0.75}
-                      stroke={isSelected ? "#0d0d0d" : statusStroke[plot.status]}
-                      strokeWidth={isSelected ? 2 : 0.8}
-                    />
-                    <text
-                      x={shape.center.x}
-                      y={shape.center.y + 2}
-                      textAnchor="middle"
-                      fontSize="7"
-                      fontWeight="700"
-                      fill="#1a1a1a"
-                      pointerEvents="none"
-                    >
-                      {shape.plotNumber}
-                    </text>
-                  </g>
-                );
-              })}
-            </svg>
           </div>
 
           <div className="rounded-xl border border-border bg-card p-5">
-            <div className="mb-3 flex items-baseline justify-between">
-              <h4 className="font-heading text-sm font-bold">Choose a Plot</h4>
-              <span className="text-xs text-muted-foreground">{plots.length} plots · refer to the layout above</span>
+            <div className="mb-3 flex items-center justify-between">
+              <h4 className="font-heading text-sm font-bold">Find a Plot</h4>
+              <span className="text-xs text-muted-foreground">Enter a plot number to view details</span>
             </div>
-            <div className="grid grid-cols-8 gap-1.5 sm:grid-cols-10 md:grid-cols-12">
-              {plots.map((plot) => {
-                const isSelected = selectedPlot?.number === plot.number;
-                return (
-                  <button
-                    key={plot.number}
-                    onClick={() => setSelectedPlot(plot)}
-                    aria-label={`Plot ${plot.number}, ${statusLabels[plot.status]}`}
-                    className={`aspect-square rounded border text-[10px] font-bold font-body transition-all ${statusButtonColors[plot.status]} ${isSelected ? "ring-2 ring-accent ring-offset-1 scale-110" : ""}`}
-                  >
-                    {plot.number}
-                  </button>
-                );
-              })}
+            <div className="flex gap-3">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  type="number"
+                  min={1}
+                  max={plots.length}
+                  placeholder="Plot number (e.g. 42)"
+                  className="pl-9"
+                  value={plotInput}
+                onChange={(e) => {
+                    const value = e.target.value;
+                    setPlotInput(value);
+                    const num = String(parseInt(value, 10));
+                    const plot = plots.find((p) => p.number === num);
+                    setSelectedPlot(plot ?? null);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      const num = String(parseInt(plotInput, 10));
+                      const plot = plots.find((p) => p.number === num);
+                      if (plot) setSelectedPlot(plot);
+                    }
+                  }}
+                />
+              </div>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  const num = String(parseInt(plotInput, 10));
+                  const plot = plots.find((p) => p.number === num);
+                  if (plot) setSelectedPlot(plot);
+                }}
+              >
+                Show Info
+              </Button>
             </div>
+            {selectedPlot && (
+              <p className="mt-3 text-sm text-muted-foreground">
+                Showing details for Plot <span className="font-semibold text-foreground">{selectedPlot.number}</span>
+              </p>
+            )}
           </div>
         </div>
 
