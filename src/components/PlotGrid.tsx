@@ -93,16 +93,16 @@ const PlotGrid = ({ plots }: PlotGridProps) => {
                   placeholder="Plot number (e.g. 42)"
                   className="pl-9"
                   value={plotInput}
-                  onChange={(e) => {
+                onChange={(e) => {
                     const value = e.target.value;
                     setPlotInput(value);
-                    const num = parseInt(value, 10);
+                    const num = String(parseInt(value, 10));
                     const plot = plots.find((p) => p.number === num);
                     setSelectedPlot(plot ?? null);
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      const num = parseInt(plotInput, 10);
+                      const num = String(parseInt(plotInput, 10));
                       const plot = plots.find((p) => p.number === num);
                       if (plot) setSelectedPlot(plot);
                     }
