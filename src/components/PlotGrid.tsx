@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Plot } from "@/data/projects";
-import { TreePine, TrendingUp, Sparkles, X } from "lucide-react";
+import { TreePine, TrendingUp, Sparkles, X, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import layoutImage from "/akul-gardens-layout.png";
-import { akulPlotShapes, akulLayout } from "@/data/akulGardensMap";
 
 const statusFill: Record<string, string> = {
   available: "#d5efb8",
